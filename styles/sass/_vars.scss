@@ -4,7 +4,7 @@ $mono: 'Lucida Console', Monaco, monospace;
 
 //toggle classes
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 //format override classes

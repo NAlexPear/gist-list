@@ -1,5 +1,5 @@
 .hidden {
-  display: none; }
+  display: none !important; }
 
 .inline {
   display: inline-block; }
@@ -43,7 +43,7 @@ header {
   margin-top: 0.25em; }
 
 #search {
-  height: 100vh;
+  height: 1000vh;
   padding: 1em;
   border-right: 1.2px solid #C9C9C9;
   border-bottom: transparent; }
@@ -53,8 +53,22 @@ header {
       border-right: transparent;
       border-bottom: 1.2px solid #C9C9C9; } }
 
+#user .avatar {
+  display: block;
+  width: 15vw;
+  height: auto;
+  margin: 1em auto 0;
+  border-radius: 50%; }
+#user .login {
+  text-align: center; }
+
 #output {
   padding: 1em;
   height: 100vh; }
+  #output .gist {
+    margin-bottom: 1em;
+    padding: 1em;
+    border: 1.2px solid #C9C9C9;
+    border-radius: 1em; }
 
 /*# sourceMappingURL=main.css.map */

@@ -11,6 +11,7 @@
 
 //helpers and handlers
 function errorHandler (collection, response, options) {
+  const user = new UserView ();
   console.log(`There was an error: ${response.responseText}`);
   $('#output').html(`<h3>That user doesn't appear to exist</h3>`);
 };
@@ -18,6 +19,20 @@ function errorHandler (collection, response, options) {
 //backbone logic for interacting with GitHub API
 let UserView = Backbone.View.extend({
   //view logic for showing user information (profile pic, name, etc)
+  defaults: {
+    login: '??',
+    avatar_url: 'https://avatars1.githubusercontent.com/u/5244508?v=3&s=96'
+  },
+  el:'#user',
+  initialize (options) {
+    if (options) this.render(options.avatar_url, options.login);
+    else this.render(this.defaults.avatar_url, this.defaults.login);
+  },
+  render (avatar, login) {
+    const parent = this.$el;
+    parent.children('img').attr('src', avatar).removeClass('hidden');
+    parent.children('div').html(`<h3>${login}</h3>`).removeClass('hidden');
+  }
 });
 
 let GistView = Backbone.View.extend({
@@ -26,7 +41,7 @@ let GistView = Backbone.View.extend({
   className: 'gist',
   render (model, target, count) {
     const link = model.attributes.html_url;
-    target.append(`<a href="${link}">gist ${count}</a><br/>`);
+    target.append(`<${this.tagName} class="${this.className}"><a href="${link}">gist ${count}</a></div>`);
   }
 });
 
@@ -38,8 +53,17 @@ let ListView = Backbone.View.extend({
   },
   render () {
     this.collection.fetch({ error: errorHandler }).then( () => {
-      if(this.collection.length === 0) this.$el.html(`<h3>Sorry, no gists found for that user</h3>`);
-      else {
+
+      if(this.collection.length === 0) {
+        this.$el.html(`<h3>Sorry, no gists found for that user</h3>`);
+        const user = new UserView ();
+      } else {
+        //render user
+        const first = this.collection.at(0);
+        const owner = first.attributes.owner;
+        const user = new UserView ({ login: owner.login, avatar_url: owner.avatar_url });
+
+        //render gists
         let i = 1;
         this.$el.empty();
         this.collection.forEach( item => {
