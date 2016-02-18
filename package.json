@@ -1,0 +1,20 @@
+{
+  "name": "gist-list",
+  "version": "0.1.0",
+  "description": "A simple web app that display's a user's public gists using the GitHub API",
+  "main": "index.js",
+  "public": "false",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NAlexPear/gist-list.git"
+  },
+  "author": "Alex Pearson <alex@alexpear.com> (https://alexpear.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NAlexPear/gist-list/issues"
+  },
+  "homepage": "https://github.com/NAlexPear/gist-list#readme"
+}
