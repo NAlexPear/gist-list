@@ -2,6 +2,8 @@
 
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-serve');
+  grunt.loadNpmTasks('grunt-babel');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.initConfig({
     serve: {
@@ -18,9 +20,12 @@ module.exports = function (grunt) {
           'scripts/dist/app.js':'scripts/lib/app.js'
         }
       }
+    },
+    watch: {
+      files: ['scripts/lib/*.js'],
+      tasks: ['babel']
     }
   });
 
   grunt.registerTask('default', ['serve']);
-  grunt.registerTask('babel', ['babel']);
 };
