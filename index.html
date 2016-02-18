@@ -37,8 +37,56 @@
   <script src="node_modules/underscore/underscore-min.js" charset="utf-8"></script>
   <script src="node_modules/backbone/backbone-min.js" charset="utf-8"></script>
   <script type="text/javascript">
-  //backbone logic for interacting with GitHub API
-  
+    //backbone logic for interacting with GitHub API
+    var GistView = Backbone.View.extend({
+      //view logic for individual gists
+    });
+
+    var ListView = Backbone.View.extend({
+      //view logic for entire list of public gists
+      el:'#output',
+      initialize: function () {
+        this.render()
+      },
+      render: function () {
+        var that = this;
+        this.collection.fetch().then(function () {
+          console.log(that.collection);
+          console.log(that.collection.length);
+
+          var i = 1;
+          that.collection.forEach( function (item) {
+            var link = item.attributes.html_url;
+            that.$el.append('<a href="' + link + '">gist' + i + '</a><br />');
+            i++;
+          });
+        });
+      }
+    });
+
+    var GistModel = Backbone.Model.extend({
+      //model based on single public gist Object from GitHub API
+      defaults: {
+        html_url: null,
+        created_at: null,
+        updated_at: null,
+        description: null,
+        files: {
+          filename: null,
+          language: null,
+          raw_url: null
+        }
+      }
+    });
+
+    var GistCollection = Backbone.Collection.extend({
+      //collection of all gists pulled from GitHub API
+      url: 'https://api.github.com/users/nalexpear/gists',
+      model: GistModel
+    });
+
+    var userCollection = new GistCollection();
+    var userGistList = new ListView({ collection: userCollection });
   </script>
 </body>
 </html>
