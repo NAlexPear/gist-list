@@ -37,6 +37,12 @@
   <script src="node_modules/underscore/underscore-min.js" charset="utf-8"></script>
   <script src="node_modules/backbone/backbone-min.js" charset="utf-8"></script>
   <script type="text/javascript">
+    //helpers and handlers
+    function errorHandler (collection, response, options) {
+      console.log('There was an error: ' + response.responseText);
+      $('#output').html("<h3>That user doesn't appear to exist</h3>");
+    };
+
     //backbone logic for interacting with GitHub API
     var GistView = Backbone.View.extend({
       //view logic for individual gists
@@ -48,18 +54,20 @@
       initialize: function () {
         this.render()
       },
-      render: function () {
+      render: function (err) {
         var that = this;
-        this.collection.fetch().then(function () {
+        this.collection.fetch({ error: errorHandler }).then(function () {
           console.log(that.collection);
-          console.log(that.collection.length);
 
-          var i = 1;
-          that.collection.forEach( function (item) {
-            var link = item.attributes.html_url;
-            that.$el.append('<a href="' + link + '">gist' + i + '</a><br />');
-            i++;
-          });
+          if(that.collection.length === 0) that.$el.html('<h3>Sorry, no gists found for that user</h3>');
+          else {
+            var i = 1;
+            that.collection.forEach( function (item) {
+              var link = item.attributes.html_url;
+              that.$el.append('<a href="' + link + '">gist' + i + '</a><br />');
+              i++;
+            });
+          }
         });
       }
     });
@@ -81,11 +89,14 @@
 
     var GistCollection = Backbone.Collection.extend({
       //collection of all gists pulled from GitHub API
-      url: 'https://api.github.com/users/nalexpear/gists',
-      model: GistModel
+      model: GistModel,
+      initialize: function (models, options) {
+        this.url = 'https://api.github.com/users/' + options.user + '/gists';
+        console.log(this.url);
+      }
     });
 
-    var userCollection = new GistCollection();
+    var userCollection = new GistCollection([], { user: "dumb user lol" });
     var userGistList = new ListView({ collection: userCollection });
   </script>
 </body>

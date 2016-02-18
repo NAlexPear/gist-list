@@ -32,22 +32,26 @@ header {
   padding: 0.25rem;
   font-size: 2rem; }
 
-.container {
-  padding: 1em; }
-  .container input[type=search] {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.25em; }
+.container input[type=search] {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em; }
+.container h3 {
+  margin-top: 0.25em; }
 
 #search {
-  padding-right: 1em; }
+  height: 100vh;
+  padding: 1em;
+  border-right: 1.2px solid #C9C9C9;
+  border-bottom: transparent; }
   @media screen and (max-width: 48em) {
     #search {
-      padding-right: 0em; } }
+      height: auto;
+      border-right: transparent;
+      border-bottom: 1.2px solid #C9C9C9; } }
 
 #output {
   padding: 1em;
-  height: 100vh;
-  background-color: lightblue; }
+  height: 100vh; }
 
 /*# sourceMappingURL=main.css.map */
