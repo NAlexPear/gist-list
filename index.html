@@ -41,20 +41,6 @@
   <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
   <script src="node_modules/underscore/underscore-min.js" charset="utf-8"></script>
   <script src="node_modules/backbone/backbone-min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    //jQuery and other events
-    $(function() {
-      'use strict';
-      $('form').on('submit', function () {
-        event.preventDefault();
-        var query = $('input[type=search]').val();
-
-        //call Backbone methods
-        var userCollection = new GistCollection([], { user: query });
-        var userGistList = new ListView({ collection: userCollection });
-      });
-    }());
-  </script>
   <script src="scripts/dist/app.js" charset="utf-8"></script>
 </body>
 </html>

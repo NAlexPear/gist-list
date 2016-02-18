@@ -1,4 +1,13 @@
 'use strict'
+  //jQuery and other events
+  $('form').on('submit', function () {
+    event.preventDefault();
+    const query = $('input[type=search]').val();
+
+    //call Backbone methods
+    const userCollection = new GistCollection([], { user: query });
+    const userGistList = new ListView({ collection: userCollection });
+  });
 
 //helpers and handlers
 function errorHandler (collection, response, options) {

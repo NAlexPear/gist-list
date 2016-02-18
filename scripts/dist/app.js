@@ -1,7 +1,16 @@
 'use strict';
+//jQuery and other events
+
+$('form').on('submit', function () {
+  event.preventDefault();
+  var query = $('input[type=search]').val();
+
+  //call Backbone methods
+  var userCollection = new GistCollection([], { user: query });
+  var userGistList = new ListView({ collection: userCollection });
+});
 
 //helpers and handlers
-
 function errorHandler(collection, response, options) {
   console.log('There was an error: ' + response.responseText);
   $('#output').html('<h3>That user doesn\'t appear to exist</h3>');
@@ -26,7 +35,6 @@ var ListView = Backbone.View.extend({
   render: function render() {
     var _this = this;
 
-    var that = this;
     this.collection.fetch({ error: errorHandler }).then(function () {
       if (_this.collection.length === 0) _this.$el.html('<h3>Sorry, no gists found for that user</h3>');else {
         (function () {
