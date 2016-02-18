@@ -8,8 +8,19 @@ module.exports = function (grunt) {
       options: {
         port: 8080
       }
+    },
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          'scripts/dist/app.js':'scripts/lib/app.js'
+        }
+      }
     }
   });
 
   grunt.registerTask('default', ['serve']);
+  grunt.registerTask('babel', ['babel']);
 };
