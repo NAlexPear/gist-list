@@ -17,13 +17,18 @@ function errorHandler(collection, response, options) {
 };
 
 //backbone logic for interacting with GitHub API
-
 var UserView = Backbone.View.extend({
   //view logic for showing user information (profile pic, name, etc)
 });
 
 var GistView = Backbone.View.extend({
   //view logic for individual gists
+  tagName: 'div',
+  className: 'gist',
+  render: function render(model, target, count) {
+    var link = model.attributes.html_url;
+    target.append('<a href="' + link + '">gist ' + count + '</a><br/>');
+  }
 });
 
 var ListView = Backbone.View.extend({
@@ -41,8 +46,9 @@ var ListView = Backbone.View.extend({
           var i = 1;
           _this.$el.empty();
           _this.collection.forEach(function (item) {
-            var link = item.attributes.html_url;
-            _this.$el.append('<a href="' + link + '">gist ' + i + '</a><br/>');
+            var gist = new GistView();
+            var target = _this.$el;
+            gist.render(item, target, i);
             i++;
           });
         })();
@@ -53,17 +59,6 @@ var ListView = Backbone.View.extend({
 
 var GistModel = Backbone.Model.extend({
   //model based on single public gist Object from GitHub API
-  defaults: {
-    html_url: null,
-    created_at: null,
-    updated_at: null,
-    description: null,
-    files: {
-      filename: null,
-      language: null,
-      raw_url: null
-    }
-  }
 });
 
 var GistCollection = Backbone.Collection.extend({
