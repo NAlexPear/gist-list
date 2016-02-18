@@ -1,0 +1,53 @@
+@import "vars";
+
+html {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  font-family: $main;
+  font-weight: 700;
+}
+
+p, li {
+  font-family: $main;
+  font-weight: 400;
+}
+
+code {
+  font-family: $mono;
+}
+
+header {
+  padding: 1em;
+  background-color: #F6F6F6;
+  border-bottom: 1.2px solid #C9C9C9;
+  h1 {
+    margin-bottom: 0;
+  }
+  h3 {
+    margin-top: 0.5em;
+    font-weight: 400;
+  }
+}
+
+.fa {
+  padding: 0.25rem;
+  font-size: 2rem;
+}
+
+.container {
+  padding: 1em;
+
+  input[type=search]{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.25em;
+  }
+}
+
+#output {
+  padding: 1em;
+  height: 100vh;
+  background-color: lightblue;
+}

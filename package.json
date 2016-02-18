@@ -2,7 +2,7 @@
   "name": "gist-list",
   "version": "0.1.0",
   "description": "A simple web app that display's a user's public gists using the GitHub API",
-  "main": "app.js",
+  "main": "index.html",
   "public": "false",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,6 +30,7 @@
     "jquery": "^2.2.0",
     "normalize-css": "^2.3.1",
     "requirejs": "^2.1.22",
+    "surge-css": "^0.2.4",
     "underscore": "^1.8.3"
   }
 }
