@@ -15,7 +15,7 @@
 <body>
   <header class="surge-grid">
     <div class="surge-column-3/4">
-      <h1 class="inline">Gist List</h1>
+      <h1 class="inline">GistList</h1>
       <span class="fa fa-github inline"></span>
       <h3>Easily navigate public gists by user</h3>
     </div>
@@ -24,10 +24,15 @@
   </header>
   <div class="container surge-grid">
     <div id="search" class="surge-column-1 surge-column-tablet-1/4 surge-column-desktop-1/6">
-      <input type="search" name="usersearch" placeholder="GitHub Username">
+      <form name="searchBox">
+        <input type="search" name="usersearch" placeholder="GitHub Username">
+        <input type="submit" class="hidden">
+      </form>
     </div>
-
-    <div id="output" class="surge-column-1 surge-column-tablet-3/4 surge-column-desktop-5/6"></div>
+    <div id="user" class="surge-column-1 surge-column-tablet-3/4 surge-column-desktop-5/6"></div>
+    <div id="output" class="surge-column-1 surge-column-tablet-3/4 surge-column-desktop-5/6">
+      <h3>Search for a user to find their public gists</h3>
+    </div>
   </div>
   <!-- SCRIPTS BELOW -->
   <!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
@@ -37,6 +42,20 @@
   <script src="node_modules/underscore/underscore-min.js" charset="utf-8"></script>
   <script src="node_modules/backbone/backbone-min.js" charset="utf-8"></script>
   <script type="text/javascript">
+    //jQuery and other events
+    $(function() {
+      'use strict';
+      $('form').on('submit', function () {
+        event.preventDefault();
+        var query = $('input[type=search]').val();
+
+        //call Backbone methods
+        var userCollection = new GistCollection([], { user: query });
+        var userGistList = new ListView({ collection: userCollection });
+      });
+    }());
+  </script>
+  <script type="text/javascript">
     //helpers and handlers
     function errorHandler (collection, response, options) {
       console.log('There was an error: ' + response.responseText);
@@ -44,6 +63,12 @@
     };
 
     //backbone logic for interacting with GitHub API
+
+    var UserView = Backbone.View.extend({
+      //view logic for showing user information (profile pic, name, etc)
+
+    });
+
     var GistView = Backbone.View.extend({
       //view logic for individual gists
     });
@@ -57,17 +82,18 @@
       render: function (err) {
         var that = this;
         this.collection.fetch({ error: errorHandler }).then(function () {
-          console.log(that.collection);
 
           if(that.collection.length === 0) that.$el.html('<h3>Sorry, no gists found for that user</h3>');
           else {
             var i = 1;
+            that.$el.empty();
             that.collection.forEach( function (item) {
               var link = item.attributes.html_url;
               that.$el.append('<a href="' + link + '">gist' + i + '</a><br />');
               i++;
             });
           }
+
         });
       }
     });
@@ -92,12 +118,10 @@
       model: GistModel,
       initialize: function (models, options) {
         this.url = 'https://api.github.com/users/' + options.user + '/gists';
-        console.log(this.url);
       }
     });
 
-    var userCollection = new GistCollection([], { user: "dumb user lol" });
-    var userGistList = new ListView({ collection: userCollection });
+    // userCollection and userGistList built on form submission (see jQuery event handlers)
   </script>
 </body>
 </html>

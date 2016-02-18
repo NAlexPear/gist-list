@@ -3,7 +3,9 @@ $main: 'Roboto', sans-serif;
 $mono: 'Lucida Console', Monaco, monospace;
 
 //toggle classes
-
+.hidden {
+  display: none;
+}
 
 //format override classes
 .inline {
