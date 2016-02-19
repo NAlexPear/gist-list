@@ -17,7 +17,8 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          'scripts/dist/app.js':'scripts/lib/app.js'
+          'scripts/dist/app.js':'scripts/lib/app.js',
+          'scripts/dist/main.js':'scripts/lib/main.js'
         }
       }
     },
