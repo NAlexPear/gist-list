@@ -81,5 +81,13 @@ header {
     padding: 1em;
     border: 1.2px solid #C9C9C9;
     border-radius: 1em;
+    a {
+      text-decoration: none;
+    }
+    p {
+      font-style: italic;
+      color: #C9C9C9;
+      margin-bottom: 0;
+    }
   }
 }

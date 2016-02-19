@@ -22,16 +22,17 @@ var UserView = Backbone.View.extend({
   //view logic for showing user information (profile pic, name, etc)
   defaults: {
     login: '??',
+    html_url: '#',
     avatar_url: 'https://avatars1.githubusercontent.com/u/5244508?v=3&s=96'
   },
   el: '#user',
   initialize: function initialize(options) {
-    if (options) this.render(options.avatar_url, options.login);else this.render(this.defaults.avatar_url, this.defaults.login);
+    if (options) this.render(options.avatar_url, options.html_url, options.login);else this.render(this.defaults.avatar_url, this.defaults.html_url, this.defaults.login);
   },
-  render: function render(avatar, login) {
+  render: function render(avatar, link, login) {
     var parent = this.$el;
     parent.children('img').attr('src', avatar).removeClass('hidden');
-    parent.children('div').html('<h3>' + login + '</h3>').removeClass('hidden');
+    parent.children('div').html('<a href="' + link + '"><h3>' + login + '</h3></a>').removeClass('hidden');
   }
 });
 
@@ -41,7 +42,28 @@ var GistView = Backbone.View.extend({
   className: 'gist',
   render: function render(model, target, count) {
     var link = model.attributes.html_url;
-    target.append('<' + this.tagName + ' class="' + this.className + '"><a href="' + link + '">gist ' + count + '</a></div>');
+    var files = Object.keys(model.attributes.files);
+    var desc = model.attributes.description.length > 0 ? model.attributes.description : '';
+
+    var fileHtml = '';
+    var i = 0;
+    files.forEach(function (file) {
+      if (i < files.length - 1) {
+        fileHtml += files[i] + ', ';
+      } else if (i < files.length) {
+        fileHtml += '' + files[i];
+      }
+      i++;
+    });
+
+    var finalHtml = '';
+    if (desc.length > 0) {
+      finalHtml += '<' + this.tagName + ' class="' + this.className + '">\n        <a href="' + link + '">' + fileHtml + '</a>\n        <p>' + desc + '</p>\n      </div>';
+    } else {
+      finalHtml += '<' + this.tagName + ' class="' + this.className + '">\n        <a href="' + link + '">' + fileHtml + '</a>\n      </div>';
+    }
+
+    target.append(finalHtml);
   }
 });
 
@@ -64,7 +86,7 @@ var ListView = Backbone.View.extend({
           //render user
           var first = _this.collection.at(0);
           var owner = first.attributes.owner;
-          var user = new UserView({ login: owner.login, avatar_url: owner.avatar_url });
+          var user = new UserView({ login: owner.login, avatar_url: owner.avatar_url, html_url: owner.html_url });
 
           //render gists
           var i = 1;

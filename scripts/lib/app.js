@@ -21,17 +21,18 @@ let UserView = Backbone.View.extend({
   //view logic for showing user information (profile pic, name, etc)
   defaults: {
     login: '??',
+    html_url: '#',
     avatar_url: 'https://avatars1.githubusercontent.com/u/5244508?v=3&s=96'
   },
   el:'#user',
   initialize (options) {
-    if (options) this.render(options.avatar_url, options.login);
-    else this.render(this.defaults.avatar_url, this.defaults.login);
+    if (options) this.render(options.avatar_url, options.html_url, options.login);
+    else this.render(this.defaults.avatar_url, this.defaults.html_url, this.defaults.login);
   },
-  render (avatar, login) {
+  render (avatar, link, login) {
     const parent = this.$el;
     parent.children('img').attr('src', avatar).removeClass('hidden');
-    parent.children('div').html(`<h3>${login}</h3>`).removeClass('hidden');
+    parent.children('div').html(`<a href="${link}"><h3>${login}</h3></a>`).removeClass('hidden');
   }
 });
 
@@ -41,7 +42,33 @@ let GistView = Backbone.View.extend({
   className: 'gist',
   render (model, target, count) {
     const link = model.attributes.html_url;
-    target.append(`<${this.tagName} class="${this.className}"><a href="${link}">gist ${count}</a></div>`);
+    const files = Object.keys(model.attributes.files);
+    const desc = model.attributes.description.length > 0 ? model.attributes.description : '';
+
+    let fileHtml = ``;
+    let i = 0;
+    files.forEach( file => {
+      if (i < files.length - 1) {
+        fileHtml += `${files[i]}, `;
+      } else if (i < files.length) {
+        fileHtml += `${files[i]}`;
+      }
+      i++;
+    });
+
+    let finalHtml = ``;
+    if (desc.length > 0 ) {
+      finalHtml += `<${this.tagName} class="${this.className}">
+        <a href="${link}">${fileHtml}</a>
+        <p>${desc}</p>
+      </div>`;
+    } else {
+      finalHtml += `<${this.tagName} class="${this.className}">
+        <a href="${link}">${fileHtml}</a>
+      </div>`;
+    }
+
+    target.append( finalHtml );
   }
 });
 
@@ -49,7 +76,7 @@ let ListView = Backbone.View.extend({
   //view logic for entire list of public gists
   el:'#output',
   initialize () {
-    this.render()
+    this.render();
   },
   render () {
     this.collection.fetch({ error: errorHandler }).then( () => {
@@ -61,7 +88,7 @@ let ListView = Backbone.View.extend({
         //render user
         const first = this.collection.at(0);
         const owner = first.attributes.owner;
-        const user = new UserView ({ login: owner.login, avatar_url: owner.avatar_url });
+        const user = new UserView ({ login: owner.login, avatar_url: owner.avatar_url, html_url: owner.html_url });
 
         //render gists
         let i = 1;
