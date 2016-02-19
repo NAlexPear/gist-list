@@ -1,6 +1,6 @@
 'use strict'
   //jQuery and other events
-  $('form').on('submit', function () {
+  $('form').on('submit', () => {
     event.preventDefault();
     const query = $('input[type=search]').val();
 
